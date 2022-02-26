@@ -5,7 +5,7 @@ import { StoreModule } from '@ngrx/store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MaterialModule } from './material.module';
+import { SharedModule } from './shared.module';
 import { appReducers, metaReducers } from './store/reducers';
 
 @NgModule({
@@ -19,7 +19,7 @@ import { appReducers, metaReducers } from './store/reducers';
     StoreModule.forRoot(appReducers, { 
       metaReducers
     }),
-    MaterialModule
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
