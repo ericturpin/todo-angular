@@ -1,0 +1,47 @@
+:host {
+  overflow-y: auto;
+
+  height: 100%;
+}
+
+.header {
+  height: 40px;
+  width: 100%;
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    max-width: calc(100% - 50px);
+
+    text-transform: capitalize;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.scrollbar {
+  height: calc(100% - 30px);
+  margin: 0 0 30px 0;
+}
+
+ul {
+  min-width: 340px;
+  width: 340px;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+mat-card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,34 @@
+:host {
+  overflow: hidden;
+  width: 100%;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  padding: 10px 10px 15px 10px;
+  box-sizing: border-box;
+
+  overflow-y: hidden;
+  overflow-x: auto;
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.todos-list-wrapper {
+  background-color: #eee;
+
+  min-width: 360px;
+  width: 360px;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  
+  border-radius: 5px;
+}
+
+

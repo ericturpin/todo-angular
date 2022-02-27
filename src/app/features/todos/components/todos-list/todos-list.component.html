@@ -1,0 +1,19 @@
+<div class="header">
+  <div class="title"> Todo list </div>
+  <div class="menu">
+    <mat-icon> menu </mat-icon>
+  </div>
+</div>
+
+<ng-scrollbar class="scrollbar" visibility="hover">
+  <ul>
+    <li *ngFor="let todo of todos">
+      <mat-card class="todo-card">
+        <mat-card-title> {{ todo.title }} </mat-card-title>
+        <mat-card-content>
+          <p> {{todo.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </li>
+  </ul>
+</ng-scrollbar>
