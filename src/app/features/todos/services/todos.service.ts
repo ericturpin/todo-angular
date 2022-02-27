@@ -23,4 +23,12 @@ export class TodosService {
       return todos;
     });
   }
+
+  updateTodo(todo: Todo): Promise<Todo> {
+    return firstValueFrom(this.http.put<Todo>(`/todos/${todo._id}`, todo)).then(() => {
+      this.store.dispatch(fromTodo.updateTodo({ update: { id: todo._id, changes: todo } }));
+  
+      return todo;
+    });
+  }
 }

@@ -3,4 +3,5 @@ export default interface Todo {
   title: string;
   description: string;
   state: string;
+  index: number;
 }

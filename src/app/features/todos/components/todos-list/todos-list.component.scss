@@ -45,3 +45,7 @@ mat-card-title {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.crossed mat-card-title {
+  text-decoration-line: line-through;
+}

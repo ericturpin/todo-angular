@@ -20,7 +20,10 @@ export class TodosComponent {
   constructor(private todosService: TodosService, private store: Store<fromTodo.State>) {
     this.loading$ = this.store.select(fromTodo.selectLoading);  
     this.todos$ = this.store.select(fromTodo.selectTodos);
- 
     this.todosService.loadAll();
+  }
+
+  onTodoChange(todo: Todo) {
+    this.todosService.updateTodo(todo);
   }
 }

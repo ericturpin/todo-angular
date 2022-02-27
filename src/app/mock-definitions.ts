@@ -98,6 +98,13 @@ const scenarios: Scenarios = {
       responseCode: 200,
       delay: 1000,
     },
+    {
+      url: /todos/,
+      method: 'PUT',
+      response: {},
+      responseCode: 200,
+      delay: 100,
+    }
   ],
 };
 

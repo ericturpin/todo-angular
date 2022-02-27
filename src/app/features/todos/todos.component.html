@@ -1,6 +1,6 @@
 <mat-progress-bar [mode]="(loading$ | async) ? 'indeterminate' : 'determinate'" color="primary"></mat-progress-bar>
 <div class="container">
   <div class="todos-list-wrapper">
-    <app-todos-list [todos]="todos$ | async"></app-todos-list>
+    <app-todos-list [todos]="todos$ | async" (todoChange)="onTodoChange($event)"></app-todos-list>
   </div>
 </div>

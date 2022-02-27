@@ -23,6 +23,10 @@ const todoReducer = createReducer(
   on(TodoActions.todosLoaded, (state, { todos }) => ({
     ...state,
     todos: TodoEntities.adapter.upsertMany(todos, state.todos),
+  })),
+  on(TodoActions.updateTodo, (state, { update }) => ({
+    ...state,
+    todos: TodoEntities.adapter.updateOne(update, state.todos)
   }))
 );
 
@@ -37,5 +41,8 @@ export const selectLoading = createSelector(
 
 export const selectTodos = createSelector(
   todoFeatureSelector,
-  (state) => state.todos.ids.map((id) => state.todos.entities[id]) as Todo[]
+  (state) => {
+    const todos = state.todos.ids.map((id) => state.todos.entities[id]) as Todo[];    
+    return todos.sort((a, b) => a.index < b.index ? -1 : 1);
+  }
 );

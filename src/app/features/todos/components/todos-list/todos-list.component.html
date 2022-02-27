@@ -8,8 +8,11 @@
 <ng-scrollbar class="scrollbar" visibility="hover">
   <ul>
     <li *ngFor="let todo of todos">
-      <mat-card class="todo-card">
-        <mat-card-title> {{ todo.title }} </mat-card-title>
+      <mat-card class="todo-card" [ngClass]="{ crossed: 'done' === todo.state }">
+        <mat-card-title> 
+          <mat-checkbox [checked]="'done' === todo.state" (change)="toggleState(todo)"></mat-checkbox>
+          {{ todo.title }} 
+        </mat-card-title>
         <mat-card-content>
           <p> {{todo.description }}</p>
         </mat-card-content>

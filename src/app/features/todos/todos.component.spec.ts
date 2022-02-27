@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import * as fromTodo from './store';
+import { updateTodo } from './store/todo.actions';
 import { TodosComponent } from './todos.component';
 
 describe('TodosComponent', () => {
@@ -48,6 +49,15 @@ describe('TodosComponent', () => {
 
     const req = httpController.expectOne({ method: 'GET', url: '/todos' });
     req.flush([]);
+  });
+
+  it('should be able to update a todo', () => {
+    const spy = spyOn(component['todosService'], 'updateTodo');
+    const todo = { _id: 'todo-1', title: 'todo 1', state: 'done', description: '', index: 1 };
+
+    component.onTodoChange(todo);
+  
+    expect(spy).toHaveBeenCalledWith(todo);
   });
 });
 
