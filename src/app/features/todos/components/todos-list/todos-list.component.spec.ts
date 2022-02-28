@@ -43,4 +43,12 @@ describe('TodosListComponent', () => {
 
     expect(spy).toHaveBeenCalledWith({ ...todos[0], state: 'undone', index: todos[0].index });
   });
+
+  it('should be able to click on a todo', () => {
+    const spy = spyOn(component['router'], 'navigateByUrl');
+    
+    component.onTodoClick(todos[0]);
+
+    expect(spy).toHaveBeenCalledWith(`/todos?id=${todos[0]._id}`);
+  });
 });

@@ -7,11 +7,13 @@ import * as TodoEntities from './todo.entities';
 export interface State {
   loading: boolean;
   todos: TodoEntities.TodosState;
+  openedTodoId: string | undefined;
 }
 
 export const initialState: State = {
   loading: false,
   todos: TodoEntities.todosInitialState,
+  openedTodoId: undefined
 };
 
 export const todoFeatureKey = 'todos';
@@ -27,6 +29,10 @@ const todoReducer = createReducer(
   on(TodoActions.updateTodo, (state, { update }) => ({
     ...state,
     todos: TodoEntities.adapter.updateOne(update, state.todos)
+  })),
+  on(TodoActions.openTodo, (state, { openedTodoId }) => ({
+    ...state,
+    openedTodoId
   }))
 );
 
@@ -45,4 +51,9 @@ export const selectTodos = createSelector(
     const todos = state.todos.ids.map((id) => state.todos.entities[id]) as Todo[];    
     return todos.sort((a, b) => a.index < b.index ? -1 : 1);
   }
+);
+
+export const selectOpenedTodo = createSelector(
+  todoFeatureSelector,
+  (state) => state.openedTodoId ? state.todos.entities[state.openedTodoId] : undefined
 );

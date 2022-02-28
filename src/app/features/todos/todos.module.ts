@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 
 import { SharedModule } from '../../shared.module';
+import { TodoDetailsComponent } from './components/todo-details/todo-details.component';
 import { TodosListComponent } from './components/todos-list/todos-list.component';
 import { TodosService } from './services/todos.service';
 import * as fromTodo from './store';
@@ -12,7 +13,8 @@ import { TodosComponent } from './todos.component';
 @NgModule({
   declarations: [
     TodosComponent,
-    TodosListComponent
+    TodosListComponent,
+    TodoDetailsComponent
   ],
   imports: [
     CommonModule,

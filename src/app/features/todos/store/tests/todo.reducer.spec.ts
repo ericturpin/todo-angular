@@ -46,4 +46,16 @@ describe('Todo reducer', () => {
     // todos must be sorted by index
     expect(fromTodo.selectTodos.projector(state)).toEqual(newTodos.reverse());
   });
+
+  it('should be able to selectOpenedTodo', () => {
+    state = fromTodo.reducer(state, fromTodo.todosLoaded({ todos }));
+    
+    // openedTodoId is defined => expect a Todo
+    state = fromTodo.reducer(state, fromTodo.openTodo({ openedTodoId: todos[0]._id }));
+    expect(fromTodo.selectOpenedTodo.projector(state)).toEqual(todos[0]);
+
+    // openedTodoId is undefined => expect undefined
+    state = fromTodo.reducer(state, fromTodo.openTodo({ openedTodoId: undefined }));
+    expect(fromTodo.selectOpenedTodo.projector(state)).toEqual(undefined);
+  });
 });

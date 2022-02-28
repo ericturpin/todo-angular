@@ -1,0 +1,36 @@
+:host {
+  background-color: #fff;
+}
+
+header {
+  padding: 10px;
+  
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-size: 1.5em;
+  }
+
+  mat-icon {
+    cursor: pointer;
+  }
+}
+
+div.state {
+  padding: 0 10px;
+  color: gray;
+}
+
+div.content {
+  padding: 0 10px;
+}
+
+p.section {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}

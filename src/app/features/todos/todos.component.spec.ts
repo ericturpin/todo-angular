@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import * as fromTodo from './store';
-import { updateTodo } from './store/todo.actions';
 import { TodosComponent } from './todos.component';
 
 describe('TodosComponent', () => {
@@ -58,6 +57,16 @@ describe('TodosComponent', () => {
     component.onTodoChange(todo);
   
     expect(spy).toHaveBeenCalledWith(todo);
+  });
+
+  it('should be able to close the todo details', () => {
+    const spyNavigateByUrl = spyOn(component['router'], 'navigateByUrl');
+    const spyDispatch = spyOn(component['store'], 'dispatch');
+
+    component.onCloseTodoDetails();
+  
+    expect(spyDispatch).toHaveBeenCalledWith(fromTodo.openTodo({ openedTodoId: undefined }));
+    expect(spyNavigateByUrl).toHaveBeenCalledWith('/todos');
   });
 });
 

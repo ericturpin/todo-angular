@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 import Todo from '../../models/todo.model';
 
@@ -12,6 +13,8 @@ export class TodosListComponent {
   @Input() todos: Todo[] | null = [];
   @Output() todoChange = new EventEmitter<Todo>();
 
+  constructor(private router: Router) { }
+
   toggleState(todo: Todo) {
     if (this.todos) {
       const state = 'undone' === todo.state ? 'done' : 'undone';
@@ -19,5 +22,9 @@ export class TodosListComponent {
   
       this.todoChange.emit({ ...todo, state, index });
     }
+  }
+
+  onTodoClick(todo: Todo) {
+    this.router.navigateByUrl(`/todos?id=${todo._id}`);
   }
 }

@@ -7,10 +7,10 @@
 
 <ng-scrollbar class="scrollbar" visibility="hover">
   <ul>
-    <li *ngFor="let todo of todos">
+    <li *ngFor="let todo of todos" (click)="onTodoClick(todo)">
       <mat-card class="todo-card" [ngClass]="{ crossed: 'done' === todo.state }">
         <mat-card-title> 
-          <mat-checkbox [checked]="'done' === todo.state" (change)="toggleState(todo)"></mat-checkbox>
+          <mat-checkbox [checked]="'done' === todo.state" (change)="toggleState(todo)" (click)="$event.stopPropagation()"></mat-checkbox>
           {{ todo.title }} 
         </mat-card-title>
         <mat-card-content>
