@@ -1,4 +1,5 @@
 import { firstValueFrom } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -21,6 +22,16 @@ export class TodosService {
       this.store.dispatch(fromTodo.loading({ loading: false }));
       
       return todos;
+    });
+  }
+
+  addTodo(todo: Partial<Todo>): Promise<Todo> {
+    return firstValueFrom(this.http.post<Todo>(`/todos`, todo)).then(() => {
+      const createdTodo = { ...todo, _id: uuidv4() } as Todo;
+
+      this.store.dispatch(fromTodo.addTodo({ todo: createdTodo }));
+  
+      return createdTodo;
     });
   }
 

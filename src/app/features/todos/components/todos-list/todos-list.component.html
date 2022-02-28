@@ -1,13 +1,18 @@
 <div class="header">
   <div class="title"> Todo list </div>
   <div class="menu">
+    <button class="add-button" mat-stroked-button (click)="showTodoForm(!isTodoFormVisible)"> 
+      <mat-icon> add </mat-icon> 
+      Add a todo 
+    </button>
     <mat-icon> menu </mat-icon>
   </div>
 </div>
 
 <ng-scrollbar class="scrollbar" visibility="hover">
   <ul>
-    <li *ngFor="let todo of todos" (click)="onTodoClick(todo)">
+    <li class="add-todo-form" *ngIf="isTodoFormVisible"> <ng-container *ngTemplateOutlet="addTodoForm"></ng-container> </li>
+    <li class="todo" *ngFor="let todo of todos" (click)="onTodoClick(todo)">
       <mat-card class="todo-card" [ngClass]="{ crossed: 'done' === todo.state }">
         <mat-card-title> 
           <mat-checkbox [checked]="'done' === todo.state" (change)="toggleState(todo)" (click)="$event.stopPropagation()"></mat-checkbox>
@@ -20,3 +25,29 @@
     </li>
   </ul>
 </ng-scrollbar>
+
+<ng-template #addTodoForm>
+  <form [formGroup]="todoForm">
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="enter a title" formControlName="title">
+      <mat-error *ngIf="todoForm.get('title')?.hasError('minlength') && !todoForm.get('title')?.hasError('required')">
+        Please enter a valid title
+      </mat-error>
+      <mat-error *ngIf="todoForm.get('title')?.hasError('required')">
+        Title is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="description">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <div class="buttons">
+      <button mat-stroked-button (click)="showTodoForm(false)" [disabled]="isCreatingTodo"> Close </button>
+      <button mat-stroked-button (click)="addTodo()" [disabled]="isCreatingTodo"> 
+        <span *ngIf="!isCreatingTodo"> Add </span>
+        <mat-icon class="rotate" *ngIf="isCreatingTodo"> settings </mat-icon> 
+      </button>
+    </div>
+  </form>
+</ng-template>

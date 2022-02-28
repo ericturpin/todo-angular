@@ -22,6 +22,14 @@ describe('Todo reducer', () => {
     expect(todos).toEqual(todosFromStore);
   });
 
+  it('should be able to add a todo', () => {
+    const todoToAdd = todos[0] as Todo;
+
+    state = fromTodo.reducer(state, fromTodo.addTodo({ todo: todoToAdd }));
+    
+    expect(state.todos.entities[todoToAdd._id]).toEqual(todoToAdd);
+  });
+
   it('should be able to update a todo', () => {
     const todoToModify = { ...todos[0], title: 'toto' };
 

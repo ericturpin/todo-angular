@@ -26,6 +26,10 @@ const todoReducer = createReducer(
     ...state,
     todos: TodoEntities.adapter.upsertMany(todos, state.todos),
   })),
+  on(TodoActions.addTodo, (state, { todo }) => ({
+    ...state,
+    todos: TodoEntities.adapter.addOne(todo, state.todos)
+  })),
   on(TodoActions.updateTodo, (state, { update }) => ({
     ...state,
     todos: TodoEntities.adapter.updateOne(update, state.todos)

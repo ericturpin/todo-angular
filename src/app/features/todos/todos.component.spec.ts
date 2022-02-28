@@ -2,13 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 
 import * as fromTodo from './store';
 import { TodosComponent } from './todos.component';
 
 describe('TodosComponent', () => {
-  let store: MockStore;
   let httpController: HttpTestingController;
   let component: TodosComponent;
 
@@ -27,7 +26,6 @@ describe('TodosComponent', () => {
       ]
     }).compileComponents();
 
-    store = TestBed.inject(MockStore);
     httpController = TestBed.inject(HttpTestingController);
     
     const fixture = TestBed.createComponent(TodosComponent);
@@ -48,15 +46,6 @@ describe('TodosComponent', () => {
 
     const req = httpController.expectOne({ method: 'GET', url: '/todos' });
     req.flush([]);
-  });
-
-  it('should be able to update a todo', () => {
-    const spy = spyOn(component['todosService'], 'updateTodo');
-    const todo = { _id: 'todo-1', title: 'todo 1', state: 'done', description: '', index: 1 };
-
-    component.onTodoChange(todo);
-  
-    expect(spy).toHaveBeenCalledWith(todo);
   });
 
   it('should be able to close the todo details', () => {

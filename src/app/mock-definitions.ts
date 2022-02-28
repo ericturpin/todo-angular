@@ -100,6 +100,13 @@ const scenarios: Scenarios = {
     },
     {
       url: /todos/,
+      method: 'POST',
+      response: {},
+      responseCode: 200,
+      delay: 1000,
+    },
+    {
+      url: /todos/,
       method: 'PUT',
       response: {},
       responseCode: 200,

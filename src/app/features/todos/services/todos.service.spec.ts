@@ -31,6 +31,19 @@ describe('TodosService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('should be able to add a todo', done => {
+    const spy = spyOn(service['store'], 'dispatch');
+    const todo = { title: 'todo 1', state: 'undone', description: '', index: 1 };
+
+    service.addTodo(todo).then(todo => {
+      expect(spy).toHaveBeenCalledWith(fromTodo.addTodo({ todo }));
+      done();
+    });  
+  
+    const req = httpController.expectOne({ method: 'POST', url: `/todos` });
+    req.event(new HttpResponse({ status: 200, statusText: 'Created', body: todo }));
+  });
+
   it('should be able to update the todo', done => {
     const spy = spyOn(service['store'], 'dispatch');
     const todo = { _id: 'todo-1', title: 'todo 1', state: 'done', description: '', index: 1 };

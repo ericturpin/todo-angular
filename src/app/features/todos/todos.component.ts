@@ -30,10 +30,6 @@ export class TodosComponent {
     });
   }
 
-  onTodoChange(todo: Todo) {
-    this.todosService.updateTodo(todo);
-  }
-
   onCloseTodoDetails() {
     this.store.dispatch(fromTodo.openTodo({ openedTodoId: undefined }));
     this.router.navigateByUrl(`/todos`);
