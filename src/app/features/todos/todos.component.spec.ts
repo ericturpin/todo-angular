@@ -8,6 +8,7 @@ import * as fromTodo from './store';
 import { TodosComponent } from './todos.component';
 
 describe('TodosComponent', () => {
+  const sections = [{ _id: 'section-1', index: 0, title: 'to do' }, { _id: 'section-2', index: 1, title: 'done' }];
   let httpController: HttpTestingController;
   let component: TodosComponent;
 
@@ -22,7 +23,9 @@ describe('TodosComponent', () => {
       ],
       providers: [
         HttpClient,
-        provideMockStore({ initialState: {} }),
+        provideMockStore({ initialState: {
+          [fromTodo.todoFeatureKey]: fromTodo.initialState
+        } }),
       ]
     }).compileComponents();
 
@@ -40,12 +43,35 @@ describe('TodosComponent', () => {
     const spy = spyOn(component['store'], 'dispatch');
 
     setTimeout(() => {
+      expect(spy).toHaveBeenCalledWith(fromTodo.sectionsLoaded({ sections }));
       expect(spy).toHaveBeenCalledWith(fromTodo.todosLoaded({ todos: [] }));
       done();
     });
 
-    const req = httpController.expectOne({ method: 'GET', url: '/todos' });
+    let req = httpController.expectOne({ method: 'GET', url: '/sections' });
+    req.flush(sections);
+
+    req = httpController.expectOne({ method: 'GET', url: '/todos' });
     req.flush([]);
+  });
+
+  it('should be able to add a section into a empty list', () => {
+    const spyAddSection = spyOn(component['todosService'], 'addSection');
+
+    component.sectionNameControl.setValue('section A');
+    component.onSectionNameKeyUp({ key: 'Enter' } as KeyboardEvent);
+  
+    expect(spyAddSection).toHaveBeenCalledWith({ title: 'section A', index: 0 });
+  });
+
+  it('should be able to add a section into a not empty list', () => {
+    const spyAddSection = spyOn(component['todosService'], 'addSection');
+
+    component.sections = sections;
+    component.sectionNameControl.setValue('section A');
+    component.onSectionNameKeyUp({ key: 'Enter' } as KeyboardEvent);
+  
+    expect(spyAddSection).toHaveBeenCalledWith({ title: 'section A', index: 2 });
   });
 
   it('should be able to close the todo details', () => {

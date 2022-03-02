@@ -1,5 +1,5 @@
 <div class="header">
-  <div class="title"> Todo list </div>
+  <div class="title"> {{ section?.title }} </div>
   <div class="menu">
     <button class="add-button" mat-stroked-button (click)="showTodoForm(!isTodoFormVisible)"> 
       <mat-icon> add </mat-icon> 
@@ -13,9 +13,8 @@
   <ul>
     <li class="add-todo-form" *ngIf="isTodoFormVisible"> <ng-container *ngTemplateOutlet="addTodoForm"></ng-container> </li>
     <li class="todo" *ngFor="let todo of todos" (click)="onTodoClick(todo)">
-      <mat-card class="todo-card" [ngClass]="{ crossed: 'done' === todo.state }">
+      <mat-card class="todo-card" [ngClass]="{ crossed: 'done' === todo.section }" appDragAndDrop [data]="todo">
         <mat-card-title> 
-          <mat-checkbox [checked]="'done' === todo.state" (change)="toggleState(todo)" (click)="$event.stopPropagation()"></mat-checkbox>
           {{ todo.title }} 
         </mat-card-title>
         <mat-card-content>

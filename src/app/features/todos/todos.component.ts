@@ -1,10 +1,11 @@
 import { Observable } from 'rxjs';
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import Todo from './models/todo.model';
+import { Section, Todo } from './models';
 import { TodosService } from './services/todos.service';
 import * as fromTodo from './store';
 
@@ -16,18 +17,38 @@ import * as fromTodo from './store';
 })
 export class TodosComponent {
   loading$: Observable<boolean>;
-  todos$: Observable<Todo[]>;
+
+  // sections information
+  sections: Section[] = [];
+  sectionNameControl = new FormControl('', [Validators.required, Validators.minLength(3)]);
+
+  // todos information
+  todosBySection$: Observable<{ [section: string]: Todo[] }>;
   openedTodo$: Observable<Todo | undefined>;
 
-  constructor(private todosService: TodosService, private store: Store<fromTodo.State>, private route: ActivatedRoute, private router: Router) {
+  constructor(private todosService: TodosService, private store: Store<fromTodo.TodosState>, private route: ActivatedRoute, private router: Router) {
     this.loading$ = this.store.select(fromTodo.selectLoading);  
-    this.todos$ = this.store.select(fromTodo.selectTodos);
+
+    this.store.select(fromTodo.selectSections).subscribe(sections => {
+      this.sections = sections;
+    });
+    
+    this.todosBySection$ = this.store.select(fromTodo.selectTodosBySection);
     this.openedTodo$ = this.store.select(fromTodo.selectOpenedTodo);
-    this.todosService.loadAll();
+    
+    this.todosService.loadSections();
+    this.todosService.loadTodos();
 
     this.route.queryParams.subscribe(params => {
       this.store.dispatch(fromTodo.openTodo({ openedTodoId: params['id'] }));
     });
+  }
+
+  onSectionNameKeyUp(event: KeyboardEvent) {
+    if (event.key === 'Enter' && this.sectionNameControl.valid) {
+      const index = !this.sections.length ? 0 : (Math.max(...this.sections.map(todo => todo.index) as number[]) + 1);
+      this.todosService.addSection({ title: this.sectionNameControl.value, index });
+    }
   }
 
   onCloseTodoDetails() {

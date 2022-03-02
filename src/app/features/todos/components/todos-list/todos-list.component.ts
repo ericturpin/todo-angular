@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/c
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import Todo from '../../models/todo.model';
+import { Section, Todo } from '../../models';
 import { TodosService } from '../../services/todos.service';
 
 @Component({
@@ -14,6 +14,7 @@ import { TodosService } from '../../services/todos.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodosListComponent {
+  @Input() section: Section | null = null;
   @Input() todos: Todo[] | null = [];
   @ViewChild(NgScrollbar) scrollbar: NgScrollbar | null = null;
 
@@ -26,15 +27,6 @@ export class TodosListComponent {
       title: new FormControl('', [Validators.required, Validators.minLength(3)]),
       description: new FormControl(''),
     });
-  }
-
-  toggleState(todo: Todo) {
-    if (this.todos) {
-      const state = 'undone' === todo.state ? 'done' : 'undone';
-      const index = 'done' === state ? (1 + Math.max(...this.todos.map(todo => todo.index) as number[])) : todo.index;
-  
-      this.todosService.updateTodo({ ...todo, state, index });
-    }
   }
 
   onTodoClick(todo: Todo) {
@@ -52,9 +44,9 @@ export class TodosListComponent {
   async addTodo() {
     this.isCreatingTodo = true;
 
-    if (this.todoForm.valid) {
+    if (this.todoForm.valid && this.section) {
       const index = !this.todos?.length ? 0 : (Math.min(...this.todos.map(todo => todo.index) as number[]) - 1);
-      await this.todosService.addTodo({ index, state: 'undone', ...this.todoForm.value });
+      await this.todosService.addTodo({ index, section: this.section.title, ...this.todoForm.value });
     }
 
     this.isCreatingTodo = false;

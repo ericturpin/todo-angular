@@ -1,8 +1,13 @@
+import { Section } from '../../models';
 import Todo from '../../models/todo.model';
 import * as fromTodo from '../../store';
 
 describe('Todo reducer', () => {
-  const todos: Todo[] = [1, 2, 3].map(i => ({ _id: `todo-${i}`, title: `todo ${i}`, state: 'done', description: '', index: i }));
+  const sections = [{ _id: 'section-1', index: 0, title: 'to do' }, { _id: 'section-2', index: 1, title: 'done' }];
+  const todos: Todo[] = [
+    { _id: 'todo-1', title: 'todo 1', section: 'done', description: '', index: 1 },
+    { _id: 'todo-2', title: 'todo 2', section: 'to do', description: '', index: 2 }
+  ];
   let state: fromTodo.State;
 
   beforeEach(() => {
@@ -15,7 +20,31 @@ describe('Todo reducer', () => {
     expect(state.loading).toBe(true);
   });
 
-  it('should be able to load the todo items', () => {
+  it('should be able to load the sections', () => {
+    state = fromTodo.reducer(state, fromTodo.sectionsLoaded({ sections }));
+    const sectionsFromStore = state.sections.ids.map(id => state.sections.entities[id]) as Section[];
+
+    expect(sections).toEqual(sectionsFromStore);
+  });
+
+  it('should be able to add a section', () => {
+    const sectionToAdd = sections[0] as Section;
+
+    state = fromTodo.reducer(state, fromTodo.addSection({ section: sectionToAdd }));
+    
+    expect(state.sections.entities[sectionToAdd._id]).toEqual(sectionToAdd);
+  });
+  
+  it('should be able to update a section', () => {
+    const sectionToModify = { ...sections[0], title: 'toto' };
+
+    state = fromTodo.reducer(state, fromTodo.sectionsLoaded({ sections }));
+    state = fromTodo.reducer(state, fromTodo.updateSections({ updates: [{ id: sectionToModify._id, changes: sectionToModify }] }));
+  
+    expect(state.sections.entities[sectionToModify._id]?.title).toEqual('toto');
+  });
+
+  it('should be able to load the todos', () => {
     state = fromTodo.reducer(state, fromTodo.todosLoaded({ todos }));
     const todosFromStore = state.todos.ids.map(id => state.todos.entities[id]) as Todo[];
 
@@ -34,7 +63,7 @@ describe('Todo reducer', () => {
     const todoToModify = { ...todos[0], title: 'toto' };
 
     state = fromTodo.reducer(state, fromTodo.todosLoaded({ todos }));
-    state = fromTodo.reducer(state, fromTodo.updateTodo({ update: { id: todoToModify._id, changes: todoToModify } }));
+    state = fromTodo.reducer(state, fromTodo.updateTodos({ updates: [{ id: todoToModify._id, changes: todoToModify }] }));
   
     expect(state.todos.entities[todoToModify._id]?.title).toEqual('toto');
   });
@@ -42,6 +71,17 @@ describe('Todo reducer', () => {
   it('should be able to selectLoading', () => {
     expect(fromTodo.selectLoading.projector({ loading: true })).toBe(true);
     expect(fromTodo.selectLoading.projector({ loading: false })).toBe(false);
+  });
+
+  it('should be able to selectSections', () => {
+    state = fromTodo.reducer(state, fromTodo.sectionsLoaded({ sections }));
+    expect(fromTodo.selectSections.projector(state)).toEqual(sections);
+
+    const newSections = sections.map((section, i) => ({ ...section, index: sections.length - i }));
+
+    state = fromTodo.reducer(state, fromTodo.sectionsLoaded({ sections: newSections }));
+    // sections must be sorted by index
+    expect(fromTodo.selectSections.projector(state)).toEqual(newSections.reverse());
   });
 
   it('should be able to selectTodos', () => {
@@ -53,6 +93,20 @@ describe('Todo reducer', () => {
     state = fromTodo.reducer(state, fromTodo.todosLoaded({ todos: newTodos }));
     // todos must be sorted by index
     expect(fromTodo.selectTodos.projector(state)).toEqual(newTodos.reverse());
+  });
+
+  it('should be able to selectTodosBySection', () => {
+    state = fromTodo.reducer(state, fromTodo.sectionsLoaded({ sections }));
+    state = fromTodo.reducer(state, fromTodo.todosLoaded({ todos }));
+
+    const selectSections = fromTodo.selectSections.projector(state);
+    const selectTodos = fromTodo.selectTodos.projector(state);
+    const expectedResult = {
+      'done': [ todos[0] ],
+      'to do': [ todos[1] ]
+    };
+    
+    expect(fromTodo.selectTodosBySection.projector(selectSections, selectTodos)).toEqual(expectedResult);
   });
 
   it('should be able to selectOpenedTodo', () => {

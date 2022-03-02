@@ -8,7 +8,7 @@ import Todo from '../../models/todo.model';
 import { TodosListComponent } from './todos-list.component';
 
 describe('TodosListComponent', () => {
-  const todos: Todo[] = [0, 1, 2].map(i => ({ _id: `todo-${i}`, title: `todo ${i}`, state: 'undone', description: '', index: i }));
+  const todos: Todo[] = [0, 1, 2].map(i => ({ _id: `todo-${i}`, title: `todo ${i}`, section: 'to do', description: '', index: i }));
   let component: TodosListComponent;
   
   beforeEach(async () => {
@@ -28,28 +28,13 @@ describe('TodosListComponent', () => {
 
     const fixture = TestBed.createComponent(TodosListComponent);
     component = fixture.componentInstance;
+    component.section = { _id: 'section-0', title: 'to do', index: 0 };
     component.todos = todos;
     fixture.detectChanges();
   });
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should be able to move state from undone to done and change the index', () => {
-    const spy = spyOn(component['todosService'], 'updateTodo');
-    
-    component.toggleState(todos[0]);
-
-    expect(spy).toHaveBeenCalledWith({ ...todos[0], state: 'done', index: 3 });
-  });
-
-  it('should be able to move state from done to undone and not change the index', () => {
-    const spy = spyOn(component['todosService'], 'updateTodo');
-    
-    component.toggleState({ ...todos[0], state: 'done' });
-
-    expect(spy).toHaveBeenCalledWith({ ...todos[0], state: 'undone', index: todos[0].index });
   });
 
   it('should be able to click on a todo', () => {
@@ -69,13 +54,13 @@ describe('TodosListComponent', () => {
     component.todoForm.patchValue(todoToCreate);
     component.addTodo();
 
-    expect(spy).toHaveBeenCalledWith({ index: 0, state: 'undone', ...todoToCreate });
+    expect(spy).toHaveBeenCalledWith({ index: 0, section: 'to do', ...todoToCreate });
 
     // test with a todos is not null
     component.todos = [];
     component.addTodo();
 
-    expect(spy).toHaveBeenCalledWith({ index: 0, state: 'undone', ...todoToCreate });
+    expect(spy).toHaveBeenCalledWith({ index: 0, section: 'to do', ...todoToCreate });
   });
 
   it('should be able to add a todo at the top of a existing todos list', () => {
@@ -85,7 +70,7 @@ describe('TodosListComponent', () => {
     component.todoForm.patchValue(todoToCreate);
     component.addTodo();
 
-    expect(spy).toHaveBeenCalledWith({ index: -1, state: 'undone', ...todoToCreate });
+    expect(spy).toHaveBeenCalledWith({ index: -1, section: 'to do', ...todoToCreate });
   });
 
   it('should be able to show the todo form and scroll at the top of the list', () => {
