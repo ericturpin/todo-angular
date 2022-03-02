@@ -1,15 +1,10 @@
 :host {
   overflow: hidden;
-  width: 100%;
-
-  display: grid;
-  grid-template-rows: 100%;
-  grid-template-columns: 100%;
 }
 
 .progressbar-and-listing-wrapper, .todo-details-wrapper {
-  grid-row: 1;
-  grid-column: 1;
+  height: 100%;
+  width: 100%;
 }
 
 .container {
@@ -30,8 +25,8 @@
   .todos-list-wrapper {
     background-color: #eee;
 
-    min-width: 360px;
-    width: 360px;
+    min-width: 350px;
+    width: 350px;
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
@@ -49,8 +44,12 @@
 }
 
 .todo-details-wrapper {
+  position: absolute;
   height: 100%;
   width: 100%;
+  top: 0;
+  left: 0;
+
   padding: 10px 10px 15px 10px;
   box-sizing: border-box;
 

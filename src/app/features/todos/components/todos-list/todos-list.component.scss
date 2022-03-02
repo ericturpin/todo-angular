@@ -37,8 +37,8 @@
 }
 
 ul {
-  min-width: 340px;
-  width: 340px;
+  min-width: 330px;
+  width: 330px;
   margin: 0;
   padding: 0;
 }
@@ -50,16 +50,6 @@ li {
   &.todo {
     cursor: pointer;
   }
-}
-
-mat-card-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.crossed mat-card-title {
-  text-decoration-line: line-through;
 }
 
 .add-todo-form {

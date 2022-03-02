@@ -1,0 +1,47 @@
+.todo-card {
+  .cover {
+    pointer-events: none;
+    max-width: 100%;
+  }
+
+  .crossed {
+    text-decoration-line: line-through;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .title, .tags {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .title span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tags {
+    font-size: 0.75em;
+  }
+
+  .description {
+    margin: 10px 0;
+  }
+
+  .data, .deadline, .checklists {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1em;
+  }
+
+  .checklists mat-icon {
+    margin-right: 8px;
+  }
+}

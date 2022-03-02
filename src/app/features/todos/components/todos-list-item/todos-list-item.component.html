@@ -1,0 +1,26 @@
+<mat-card *ngIf="todo" class="todo-card" appDragAndDrop [data]="todo">
+  <img class="cover" *ngIf="todo.cover" mat-card-image [src]="todo.cover">
+  <mat-card-content>
+    <p class="title"> 
+      <mat-icon> description </mat-icon>
+      <span [ngClass]="{ crossed: 'done' === todo.section }"> {{ todo.title }} </span>
+    </p>
+    <p class="tags"> <mat-icon> label </mat-icon> {{ todo.tags | tags }} </p>
+    <p class="description"> {{ todo.description }} </p>
+    <div class="data"> 
+      <span class="deadline"> <mat-icon> query_builder </mat-icon> {{ todo.deadline | date }} </span>
+      <div class="right">
+        <span class="checklists"> 
+          <ng-container *ngIf="todo.checklists?.length">
+            <mat-icon> checklist </mat-icon> {{ getCheckListInformation() }}
+          </ng-container>
+        </span>
+        <span class="attachment"> 
+          <ng-container *ngIf="todo.attachment?.length">
+            <mat-icon> attach_file </mat-icon> {{ todo.attachment?.length }}
+          </ng-container>
+        </span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -13,14 +13,7 @@
   <ul>
     <li class="add-todo-form" *ngIf="isTodoFormVisible"> <ng-container *ngTemplateOutlet="addTodoForm"></ng-container> </li>
     <li class="todo" *ngFor="let todo of todos" (click)="onTodoClick(todo)">
-      <mat-card class="todo-card" [ngClass]="{ crossed: 'done' === todo.section }" appDragAndDrop [data]="todo">
-        <mat-card-title> 
-          {{ todo.title }} 
-        </mat-card-title>
-        <mat-card-content>
-          <p> {{todo.description }}</p>
-        </mat-card-content>
-      </mat-card>
+      <app-todos-list-item [todo]="todo"></app-todos-list-item>
     </li>
   </ul>
 </ng-scrollbar>
