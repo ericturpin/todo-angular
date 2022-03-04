@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { isTodo, MoveableObject, Section, Todo } from '../models';
+import { isTodo, MoveableObject, Section, Tag, Todo } from '../models';
 import * as fromTodo from '../store';
 
 @Injectable({
@@ -110,5 +110,49 @@ export class TodosService {
 
       this.updateSections(sectionsToModify);
     }
+  }
+
+  loadTags(): Promise<Tag[]> {
+    return firstValueFrom(this.http.get<Tag[]>('/tags')).then(tags => {
+      this.store.dispatch(fromTodo.tagsLoaded({ tags }));
+      
+      return tags;
+    });
+  } 
+
+  addTag(tag: Partial<Tag>): Promise<Tag> {
+    tag._id = uuidv4();
+
+    return firstValueFrom(this.http.post<Tag>(`/tags`, tag)).then(() => {
+      this.store.dispatch(fromTodo.addTag({ tag: tag as Tag }));
+  
+      return tag as Tag;
+    });
+  }
+
+  updateTags(tags: Tag[]): Promise<Tag[]> {
+    return firstValueFrom(this.http.put<Tag[]>('/tags', tags)).then(() => {
+      this.store.dispatch(fromTodo.updateTags({ updates: tags.map(tag => ({ id: tag._id, changes: tag })) }));
+  
+      return tags;
+    });
+  }
+
+  deleteTag(tag: Tag): Promise<Tag> {
+    const todosUsingThisTag = this.todos.filter(todo => todo.tags?.find(t => t === tag._id));
+    const todosAfterTagDeletion = todosUsingThisTag.map(todo => ({ 
+      ...todo, 
+      tags: (todo.tags as string[]).filter(t => t !== tag._id) 
+    }));
+    
+    if (todosAfterTagDeletion.length) {
+      this.updateTodos(todosAfterTagDeletion);
+    }
+  
+    return firstValueFrom(this.http.delete<Tag>(`/tags/${tag._id}`)).then(() => {
+      this.store.dispatch(fromTodo.deleteTag({ tag: tag._id }));
+  
+      return tag;
+    });
   }
 }

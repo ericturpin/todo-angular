@@ -1,13 +1,15 @@
 import { Action, createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 
-import { Section, Todo } from '../models';
+import { Section, Tag, Todo } from '../models';
 import * as SectionEntities from './section.entities';
+import * as TagEntities from './tag.entities';
 import * as TodoActions from './todo.actions';
 import * as TodoEntities from './todo.entities';
 
 export interface State {
   loading: boolean;
   sections: SectionEntities.SectionsState;
+  tags: TagEntities.TagsState;
   todos: TodoEntities.TodosState;
   openedTodoId: string | undefined;
 }
@@ -15,6 +17,7 @@ export interface State {
 export const initialState: State = {
   loading: false,
   sections: SectionEntities.sectionsInitialState,
+  tags: TagEntities.tagsInitialState,
   todos: TodoEntities.todosInitialState,
   openedTodoId: undefined
 };
@@ -36,6 +39,22 @@ const todoReducer = createReducer(
   on(TodoActions.updateSections, (state, { updates }) => ({
     ...state,
     sections: SectionEntities.sectionsAdapter.updateMany(updates, state.sections)
+  })),
+  on(TodoActions.tagsLoaded, (state, { tags }) => ({
+    ...state,
+    tags: TagEntities.tagsAdapter.upsertMany(tags, state.tags),
+  })),
+  on(TodoActions.addTag, (state, { tag }) => ({
+    ...state,
+    tags: TagEntities.tagsAdapter.addOne(tag, state.tags)
+  })),
+  on(TodoActions.updateTags, (state, { updates }) => ({
+    ...state,
+    tags: TagEntities.tagsAdapter.updateMany(updates, state.tags)
+  })),
+  on(TodoActions.deleteTag, (state, { tag }) => ({
+    ...state,
+    tags: TagEntities.tagsAdapter.removeOne(tag, state.tags)
   })),
   on(TodoActions.todosLoaded, (state, { todos }) => ({
     ...state,
@@ -72,10 +91,16 @@ export const selectSections = createSelector(
   }
 );
 
+export const selectTags = createSelector(
+  todoFeatureSelector,
+  (state) => state.tags.ids.map((id) => state.tags.entities[id]) as Tag[]
+);
+
 export const selectTodos = createSelector(
   todoFeatureSelector,
   (state) => {
-    const todos = state.todos.ids.map((id) => state.todos.entities[id]) as Todo[];    
+    const todos = state.todos.ids.map((id) => state.todos.entities[id]) as Todo[];
+
     return todos.sort((a, b) => a.index < b.index ? -1 : 1);
   }
 );

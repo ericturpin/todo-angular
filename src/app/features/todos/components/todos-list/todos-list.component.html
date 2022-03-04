@@ -13,7 +13,7 @@
   <ul>
     <li class="add-todo-form" *ngIf="isTodoFormVisible"> <ng-container *ngTemplateOutlet="addTodoForm"></ng-container> </li>
     <li class="todo" *ngFor="let todo of todos" (click)="onTodoClick(todo)">
-      <app-todos-list-item [todo]="todo"></app-todos-list-item>
+      <app-todos-list-item [todo]="todo" [tags]="tags"></app-todos-list-item>
     </li>
   </ul>
 </ng-scrollbar>

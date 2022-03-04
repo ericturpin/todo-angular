@@ -1,0 +1,85 @@
+<ng-container [ngSwitch]="template">
+  <div *ngSwitchCase="'list'" class="list"> <ng-container *ngTemplateOutlet="list"></ng-container> </div>
+  <div *ngSwitchCase="'form'" class="form"> <ng-container *ngTemplateOutlet="form"></ng-container> </div>
+</ng-container>  
+
+<ng-template #list>
+  <ul class="row tags">
+    <ng-container *ngFor="let tag of tags"> 
+      <li *ngIf="isSelected(tag._id)">
+        <button class="tag" mat-flat-button [ngStyle]="{backgroundColor:tag.color}" (click)="styleChange.emit()">
+          {{ tag.title }}
+        </button>
+      </li>
+    </ng-container>
+    <li> 
+      <button mat-stroked-button (click)="styleChange.emit()">
+        <mat-icon> add </mat-icon> Add a tag
+      </button>
+    </li>
+  </ul>
+</ng-template>
+
+<ng-template #form>
+  <ng-container>
+    <div class="row header">
+      Tags
+      <div class="buttons">
+        <button *ngIf="!editingTag" class="add-button" mat-stroked-button (click)="openColorsPanel()"> 
+          <mat-icon> add </mat-icon> Add a tag
+        </button>
+        <mat-icon (click)="destroy.emit()"> close </mat-icon>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!editingTag">
+      <div class="row search">
+        <mat-form-field>
+          <mat-label>Search a tag</mat-label>
+          <input matInput [formControl]="searchFormControl">
+        </mat-form-field>
+      </div>
+      <ul class="row tags">
+        <li *ngFor="let tag of tags | tagsFilter: searchFormControl.value"> 
+          <span class="tag" [ngStyle]="{backgroundColor:tag.color}" (click)="toggleTagChecked(tag)">
+            {{ tag.title }}
+            <mat-icon *ngIf="isSelected(tag._id)"> checked </mat-icon>
+          </span>
+          <button mat-icon-button (click)="openColorsPanel(tag)">
+            <mat-icon> edit </mat-icon>
+          </button>
+        </li>
+      </ul>
+    </ng-container>
+    
+    <ng-container *ngIf="editingTag">
+      <div class="row colors-panel">
+        <mat-form-field>
+          <mat-label>Tag</mat-label>
+          <input matInput [formControl]="tagNameFormControl">
+        </mat-form-field>
+        <button 
+          mat-icon-button 
+          ngx-colors-trigger 
+          [ngModel]="editingTag.color"
+          [style.background]="editingTag.color"
+          (change)="onColorChange($event)">
+        </button>
+      </div>
+      <div class="row buttons">
+        <button mat-stroked-button (click)="editingTag=null"> 
+          Cancel
+        </button>
+
+        <button *ngIf="editingTag._id" mat-stroked-button (click)="deleteTag()"> 
+          Delete
+        </button>
+
+        <button mat-stroked-button (click)="saveTag()" [disabled]="!tagNameFormControl.valid"> 
+          <span *ngIf="!editingTag._id"> Create </span>
+          <span *ngIf="editingTag._id"> Save </span>
+        </button>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-template>

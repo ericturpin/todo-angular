@@ -5,7 +5,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { Section, Todo } from './models';
+import { Section, Tag, Todo } from './models';
 import { TodosService } from './services/todos.service';
 import * as fromTodo from './store';
 
@@ -22,6 +22,9 @@ export class TodosComponent {
   sections: Section[] = [];
   sectionNameControl = new FormControl('', [Validators.required, Validators.minLength(3)]);
 
+  // tags information
+  tags$: Observable<Tag[]>;
+    
   // todos information
   todosBySection$: Observable<{ [section: string]: Todo[] }>;
   openedTodo$: Observable<Todo | undefined>;
@@ -33,10 +36,13 @@ export class TodosComponent {
       this.sections = sections;
     });
     
+    this.tags$ = this.store.select(fromTodo.selectTags);
+
     this.todosBySection$ = this.store.select(fromTodo.selectTodosBySection);
     this.openedTodo$ = this.store.select(fromTodo.selectOpenedTodo);
     
     this.todosService.loadSections();
+    this.todosService.loadTags();
     this.todosService.loadTodos();
 
     this.route.queryParams.subscribe(params => {

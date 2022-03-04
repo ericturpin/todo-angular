@@ -5,10 +5,16 @@
       <mat-icon> description </mat-icon>
       <span [ngClass]="{ crossed: 'done' === todo.section }"> {{ todo.title }} </span>
     </p>
-    <p class="tags"> <mat-icon> label </mat-icon> {{ todo.tags | tags }} </p>
-    <p class="description"> {{ todo.description }} </p>
+    <p class="tags" *ngIf="todo.tags?.length">
+      <mat-icon> label </mat-icon>
+      <span *ngFor="let tag of selectedTags" [ngStyle]="{color: tag.color}"> {{ tag.title }} </span>
+    </p>
     <div class="data"> 
-      <span class="deadline"> <mat-icon> query_builder </mat-icon> {{ todo.deadline | date }} </span>
+      <span class="deadline"> 
+        <ng-container *ngIf="todo.deadline">
+          <mat-icon> query_builder </mat-icon> {{ todo.deadline | date }} 
+        </ng-container>
+      </span>
       <div class="right">
         <span class="checklists"> 
           <ng-container *ngIf="todo.checklists?.length">

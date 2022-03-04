@@ -5,6 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 
+import { DataTransferMock, DragEventMock } from '../../utils/dragevent-mock';
 import { TodosService } from '../services/todos.service';
 import * as fromTodo from '../store';
 import { DragAndDropDirective } from './drag-and-drop.directive';
@@ -14,25 +15,7 @@ import { DragAndDropDirective } from './drag-and-drop.directive';
 })
 class DraggingComponent { }
 
-class DataTransferMock {
-  data = new Map<string, string>();
 
-  setData(format: string, data: string) {
-    this.data.set(format, data);
-  }
-
-  getData(format: string) {
-    return this.data.get(format);
-  }
-}
-
-class DragEventMock {
-  target: HTMLElement | undefined;
-  dataTransfer: DataTransferMock | undefined;
-
-  stopPropagation() { }
-  preventDefault() { }
-}
 
 describe('DragAndDropDirective', () => {
   let todosService: TodosService;
@@ -70,7 +53,7 @@ describe('DragAndDropDirective', () => {
 
   it('should be able to dragStart', () => {
     const dragged = { _id: 'todo-1', index: 1, title: 'todo 1' };
-    const event = new DragEventMock();
+    const event = new DragEventMock() as any;
     event.dataTransfer = new DataTransferMock();
     event.target = movableElement.nativeElement;
     
@@ -81,7 +64,7 @@ describe('DragAndDropDirective', () => {
   });
   
   it('should be able to dragOver', () => {
-    const event = new DragEventMock();
+    const event = new DragEventMock() as any;
     const spyPreventDefault = spyOn(event, 'preventDefault');
     
     directive.onDragOver(event);
@@ -96,7 +79,7 @@ describe('DragAndDropDirective', () => {
 
     directive.data = dropped;
 
-    const event = new DragEventMock();
+    const event = new DragEventMock() as any;
     event.dataTransfer = new DataTransferMock();
     event.dataTransfer.setData('dragged', JSON.stringify(dragged));
     event.target = document.createElement('div');

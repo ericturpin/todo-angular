@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import Todo from '../../models/todo.model';
-import { TagsPipe } from '../../pipes/tags.pipe';
 import { TodosListComponent } from './todos-list.component';
 
 describe('TodosListComponent', () => {
@@ -19,8 +18,7 @@ describe('TodosListComponent', () => {
         RouterTestingModule
       ],
       declarations: [
-        TodosListComponent,
-        TagsPipe
+        TodosListComponent
       ],
       providers: [
         HttpClient,

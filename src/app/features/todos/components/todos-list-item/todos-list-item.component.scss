@@ -1,7 +1,7 @@
 .todo-card {
   .cover {
     pointer-events: none;
-    max-width: 100%;
+    min-width: 100%;
   }
 
   .crossed {
@@ -26,7 +26,15 @@
   }
 
   .tags {
-    font-size: 0.75em;
+    font-size: 0.9em;
+
+    display: flex;
+    flex-flow: row wrap;
+
+    span {
+      text-transform: capitalize;
+      margin-right: 5px;
+    }
   }
 
   .description {

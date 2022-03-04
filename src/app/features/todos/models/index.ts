@@ -1,7 +1,8 @@
 import Section from './section.model';
+import Tag from './tag.model';
 import Todo from './todo.model';
 
-export { Section, Todo };
+export { Section, Tag, Todo };
 
 export type MoveableObject = Section | Todo;
 

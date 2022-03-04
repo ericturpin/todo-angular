@@ -1,26 +1,51 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TagsPipe } from '../../pipes/tags.pipe';
 import { TodosListItemComponent } from './todos-list-item.component';
 
 describe('TodosListComponent', () => {
+  let fixture: ComponentFixture<TodosListItemComponent>;
   let component: TodosListItemComponent;
   
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        TodosListItemComponent,
-        TagsPipe
+        TodosListItemComponent
       ]
     }).compileComponents();
 
-    const fixture = TestBed.createComponent(TodosListItemComponent);
+    fixture = TestBed.createComponent(TodosListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should ngOnChanges', () => {
+    const spyUpdateSelectedTags = spyOn(component, 'updateSelectedTags');
+
+    component.ngOnChanges();
+
+    expect(spyUpdateSelectedTags).toHaveBeenCalled();
+  });
+
+  it('should updateSelectedTags', () => {
+    const tags = [{ _id: 'tag-1', title: 'tag 1', color: '#fff' }, { _id: 'tag-2', title: 'tag 2', color: '#fff' }];
+    const todo = { _id: 'id1', section: 'done', title: 'todo1', index: 0, description: '', tags: ['tag-2'] };
+
+    component.updateSelectedTags();
+    expect(component.selectedTags).toBeFalsy();
+
+    component.tags = tags;
+    fixture.detectChanges();
+    component.updateSelectedTags();
+    expect(component.selectedTags).toEqual([]);
+    
+    component.todo = todo;
+    fixture.detectChanges();
+    component.updateSelectedTags();
+    expect(component.selectedTags).toEqual([tags[1]]);
   });
 
   it('should be able to getCheckListInformation', () => {

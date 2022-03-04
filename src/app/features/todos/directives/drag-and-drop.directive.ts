@@ -13,7 +13,7 @@ export class DragAndDropDirective {
     this.el.nativeElement.draggable = true;
   }
 
-  @HostListener('dragstart', ['$event']) onDragStart(event: any) {
+  @HostListener('dragstart', ['$event']) onDragStart(event: DragEvent) {
     event.stopPropagation();
 
     if (event.dataTransfer) {
@@ -22,11 +22,11 @@ export class DragAndDropDirective {
     }
   }
   
-  @HostListener('dragover', ['$event']) onDragOver(event: any) {
+  @HostListener('dragover', ['$event']) onDragOver(event: DragEvent) {
     event.preventDefault();
   }
 
-  @HostListener('drop', ['$event']) onDrop(event: any) {
+  @HostListener('drop', ['$event']) onDrop(event: DragEvent) {
     this.el.nativeElement.classList.remove('over');
     
     event.preventDefault();

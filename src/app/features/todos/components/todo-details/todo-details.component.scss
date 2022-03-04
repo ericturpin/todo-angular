@@ -1,17 +1,51 @@
 :host {
   background-color: #fff;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  overflow: auto;
 }
 
-header {
-  padding: 10px;
-  
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
+.row {
+  width: 100%;
+  box-sizing: border-box;
 
-  .title {
-    font-size: 1.5em;
+  padding: 0 10px 0 10px;
+
+  display: grid;
+  grid-template-rows: 100%;
+  grid-template-columns: 30px 1fr;
+
+  .icon {
+    grid-column: 1;
+  }
+
+  .content {
+    grid-column: 2;
+
+    label {
+      margin-top: 4px;
+      font-size: 1em;
+      font-weight: bold;
+    }
+  }
+}
+
+.header {
+  padding: 10px 10px 0 10px;
+  
+  .content {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;    
+  
+    .title {
+      font-size: 1.5em;
+    }
   }
 
   mat-icon {
@@ -19,18 +53,114 @@ header {
   }
 }
 
-div.section {
-  padding: 0 10px;
-  color: gray;
+.section-and-deadline {
+  padding: 0 10px 0 10px;
+
+  .content {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+  }
 }
 
-div.content {
-  padding: 0 10px;
+.tags {
+  padding: 10px 10px 0 10px;
+  
+  .content {
+    text-transform: capitalize;
+  }
 }
 
-p.section {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center;
+.description {
+  padding: 10px 10px 0 10px;
+  
+  .content {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    gap: 10px;
+
+    .cover {
+      width: 200px;
+      height: 200px;
+
+      .cover-header {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+
+        .remove {
+          cursor: pointer;
+          color: #00f;
+        }
+      }
+
+      .cover-wrapper {
+        background-color: #eee;
+
+        height: 190px;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+
+        overflow: hidden;
+
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          max-width: 100%;
+        }
+      }
+    }
+
+    .description-wrapper {
+      flex: 1 1;
+
+      label {
+        margin-bottom: 10px;
+      }
+  
+      .editor {
+        min-height: 100px;
+        max-height: 600px;
+      }
+    }
+  }
 }
+
+.checklists {
+  padding: 10px 10px 0 10px;
+  
+  .content {
+    display: flex;
+    flex-flow: column nowrap;
+
+    label {
+      margin-bottom: 10px;
+    }
+
+    .checklist {
+      margin: 0;
+      padding: 0;
+
+      list-style-type: none;
+    
+      .title {
+        margin-bottom: 10px;
+      }
+
+      .item {
+        margin: 0 0 10px 20px;
+
+        .checkbox {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+

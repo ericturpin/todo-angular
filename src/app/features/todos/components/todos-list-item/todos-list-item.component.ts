@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { Todo } from '../../models';
+import { Tag, Todo } from '../../models';
 
 @Component({
   selector: 'app-todos-list-item',
@@ -8,8 +8,19 @@ import { Todo } from '../../models';
   styleUrls: ['./todos-list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TodosListItemComponent {
+export class TodosListItemComponent implements OnChanges {
+  @Input() tags: Tag[] | null = null;
   @Input() todo: Todo | null = null;
+
+  selectedTags: Tag[] | undefined = [];
+
+  ngOnChanges(): void {
+    this.updateSelectedTags();
+  }
+
+  updateSelectedTags() {
+    this.selectedTags = this.tags?.filter(tag => this.todo?.tags?.includes(tag._id));
+  }
 
   getCheckListInformation(): string {
     const information = { checked: 0, total: 0 };

@@ -1,9 +1,85 @@
-<header> 
-  <span class="title"> {{ todo?.title }} </span>
-  <mat-icon (click)="close()"> close </mat-icon>
-</header>
-<div class="section"> Section {{ todo?.section }} </div>
-<div class="content">
-  <p class="section"> <mat-icon> description </mat-icon> Description </p>
-  <p> {{todo?.description }}</p>
+<div class="row header"> 
+  <div class="icon"> <mat-icon> description </mat-icon> </div>
+  <div class="content">
+    <label> {{ todo?.title }} </label>
+    <mat-icon (click)="close()"> close </mat-icon>
+  </div>
+</div>
+
+<div class="row section-and-deadline"> 
+  <div class="content"> 
+    <div class="section-info"> 
+      Section <span class="section"> {{ todo?.section }}</span>
+    </div> 
+    <div class="deadline" *ngIf="todo?.deadline">
+      <span>,&nbsp;deadline </span> {{ todo?.deadline | date }}
+    </div>
+  </div>
+</div>
+
+<div class="row tags"> 
+  <div class="icon"> <mat-icon> label </mat-icon> </div>
+  <div class="content">
+    <app-tags-form 
+      #trigger="cdkOverlayOrigin"
+      cdkOverlayOrigin 
+      template="list" 
+      [tags]="tags" 
+      [selected]="todo?.tags" 
+      (styleChange)="isTagsListOpened=!isTagsListOpened">
+    </app-tags-form>
+
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayOpen]="isTagsListOpened"
+    >
+      <app-tags-form 
+        template="form" 
+        [tags]="tags" 
+        [selected]="todo?.tags" 
+        (add)="onAddTag($event)"
+        (update)="onUpdateTag($event)"
+        (selectedChange)="onSelectedTagsChange($event)"
+        (delete)="onDeleteTag($event)"
+        (destroy)="isTagsListOpened=false">
+      </app-tags-form>
+    </ng-template>
+  </div>
+</div>
+
+<div class="row description"> 
+  <div class="icon"> <mat-icon> menu </mat-icon> </div>
+  <div class="content">
+    <div class="cover">
+      <div class="cover-header"> <label> Cover </label> <span class="remove" (click)="removeCover()"> remove </span> </div>
+      <div class="cover-wrapper">
+        <app-drag-and-drop-zone (event)="onDropEvent($event)"> 
+          <app-upload-button (fileChanged)="onDropEvent($event)"> 
+            <span *ngIf="!todo?.cover"> Drag and drop the image </span>
+            <img [src]="todo?.cover">
+          </app-upload-button>
+        </app-drag-and-drop-zone>
+      </div>
+    </div>
+    <div class="description-wrapper">
+      <label> Description </label>
+      <div class="editor">
+        {{ todo?.description }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row checklists"> 
+  <div class="icon"> <mat-icon> check </mat-icon> </div>
+  <div class="content">
+    <label> Checklists </label>
+    <ul class="checklist" *ngFor="let checklist of todo?.checklists">
+      <li class="title"> {{ checklist.title }} </li>
+      <li class="item" *ngFor="let item of checklist.items">
+        <mat-checkbox class="checkbox" [checked]="item.checked"></mat-checkbox> {{ item.title }}
+      </li>
+    </ul>
+  </div>
 </div>

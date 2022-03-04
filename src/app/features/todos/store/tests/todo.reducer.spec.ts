@@ -1,9 +1,10 @@
-import { Section } from '../../models';
+import { Section, Tag } from '../../models';
 import Todo from '../../models/todo.model';
 import * as fromTodo from '../../store';
 
 describe('Todo reducer', () => {
   const sections = [{ _id: 'section-1', index: 0, title: 'to do' }, { _id: 'section-2', index: 1, title: 'done' }];
+  const tags = [{ _id: 'tag-1', title: 'tag 1', color: '#aaa' }];
   const todos: Todo[] = [
     { _id: 'todo-1', title: 'todo 1', section: 'done', description: '', index: 1 },
     { _id: 'todo-2', title: 'todo 2', section: 'to do', description: '', index: 2 }
@@ -119,5 +120,41 @@ describe('Todo reducer', () => {
     // openedTodoId is undefined => expect undefined
     state = fromTodo.reducer(state, fromTodo.openTodo({ openedTodoId: undefined }));
     expect(fromTodo.selectOpenedTodo.projector(state)).toEqual(undefined);
+  });
+
+  it('should be able to load the tags', () => {
+    state = fromTodo.reducer(state, fromTodo.tagsLoaded({ tags }));
+    const tagsFromStore = state.tags.ids.map(id => state.tags.entities[id]) as Tag[];
+
+    expect(tags).toEqual(tagsFromStore);
+  });
+
+  it('should be able to add a tag', () => {
+    const tagToAdd = tags[0] as Tag;
+
+    state = fromTodo.reducer(state, fromTodo.addTag({ tag: tagToAdd }));
+    
+    expect(state.tags.entities[tagToAdd._id]).toEqual(tagToAdd);
+  });
+
+  it('should be able to update a tag', () => {
+    const tagToModify = { ...tags[0], title: 'bug' };
+
+    state = fromTodo.reducer(state, fromTodo.tagsLoaded({ tags }));
+    state = fromTodo.reducer(state, fromTodo.updateTags({ updates: [{ id: tagToModify._id, changes: tagToModify }] }));
+  
+    expect(state.tags.entities[tagToModify._id]?.title).toEqual('bug');
+  });
+
+  it('should be able to delete a tag', () => {
+    state = fromTodo.reducer(state, fromTodo.tagsLoaded({ tags }));
+    state = fromTodo.reducer(state, fromTodo.deleteTag({ tag: tags[0]._id }));
+  
+    expect(state.tags.entities[tags[0]._id]).toBeFalsy();
+  });
+
+  it('should be able to selectTags', () => {
+    state = fromTodo.reducer(state, fromTodo.tagsLoaded({ tags }));
+    expect(fromTodo.selectTags.projector(state)).toEqual(tags);
   });
 });

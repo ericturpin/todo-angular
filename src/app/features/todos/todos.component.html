@@ -3,7 +3,7 @@
   
   <div class="container">
     <div class="todos-list-wrapper" *ngFor="let section of sections" appDragAndDrop [data]="section">
-      <app-todos-list [section]="section" [todos]="todosBySection$ | async | keyValues: section.title"></app-todos-list>
+      <app-todos-list [section]="section" [tags]="tags$ | async" [todos]="todosBySection$ | async | keyValues: section.title"></app-todos-list>
     </div>
     <div class="todos-list-wrapper form">
       <mat-form-field appearance="fill">
@@ -23,5 +23,5 @@
 </div>
 
 <div class="todo-details-wrapper" *ngIf="openedTodo$ | async">
-  <app-todo-details [todo]="openedTodo$ | async" (destroy)="onCloseTodoDetails()"></app-todo-details>
+  <app-todo-details [todo]="openedTodo$ | async" [tags]="tags$ | async" (destroy)="onCloseTodoDetails()"></app-todo-details>
 </div>

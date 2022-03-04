@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/c
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Section, Todo } from '../../models';
+import { Section, Tag, Todo } from '../../models';
 import { TodosService } from '../../services/todos.service';
 
 @Component({
@@ -15,6 +15,7 @@ import { TodosService } from '../../services/todos.service';
 })
 export class TodosListComponent {
   @Input() section: Section | null = null;
+  @Input() tags: Tag[] | null = null;
   @Input() todos: Todo[] | null = [];
   @ViewChild(NgScrollbar) scrollbar: NgScrollbar | null = null;
 
