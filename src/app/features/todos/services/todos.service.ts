@@ -91,13 +91,13 @@ export class TodosService {
       if (isTodo(target)) {
         const move = 0 < target.index - source.index ? 1 : 0;
         const topTodos = existingTodosFromTarget.filter(todo => todo.index < target.index + move && todo._id != source._id);
-        const index = !topTodos.length ? (target.index - 1) : Math.max(...topTodos.map(t => t.index));
+        const index = 0 == topTodos.length ? (target.index - 1) : Math.max(...topTodos.map(t => t.index));
         const todosToModify = topTodos.map(todo => ({ ...todo, index: todo.index - 1 })).concat([{ ...source, section: targetSectionTiltle, index }]);
 
         this.updateTodos(todosToModify);
       } else {
         const existingIndices = existingTodosFromTarget.map(todo => todo.index);
-        const index = !existingTodosFromTarget.length ? 0 : Math.max(...existingIndices) + 1;
+        const index = 0 == existingTodosFromTarget.length ? 0 : Math.max(...existingIndices) + 1;
         const todoToModify = { ...source, section: targetSectionTiltle, index };
     
         this.updateTodos([todoToModify]);
@@ -105,7 +105,7 @@ export class TodosService {
     } else {
       const move = 0 < targetSection.index - source.index ? 1 : 0;
       const topSections = this.sections.filter(section => section.index < targetSection.index + move && section._id != source._id);
-      const index = !topSections.length ? (targetSection.index - 1) : Math.max(...topSections.map(t => t.index));
+      const index = 0 == topSections.length ? (targetSection.index - 1) : Math.max(...topSections.map(t => t.index));
       const sectionsToModify = topSections.map(section => ({ ...section, index: section.index - 1 })).concat([{ ...source, index }]);
 
       this.updateSections(sectionsToModify);
@@ -145,7 +145,7 @@ export class TodosService {
       tags: (todo.tags as string[]).filter(t => t !== tag._id) 
     }));
     
-    if (todosAfterTagDeletion.length) {
+    if (0 < todosAfterTagDeletion.length) {
       this.updateTodos(todosAfterTagDeletion);
     }
   

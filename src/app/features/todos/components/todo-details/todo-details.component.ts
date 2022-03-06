@@ -80,7 +80,7 @@ export class TodoDetailsComponent implements AfterViewInit {
   onDropEvent(event: DragEvent | FileList): void {
     let files;
 
-    if ((event as FileList).length) {
+    if (undefined != (event as FileList).length) {
       files = event;
     } else {
       const dataTransfer = (event as DragEvent).dataTransfer;

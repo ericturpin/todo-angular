@@ -35,7 +35,7 @@ export class DragAndDropDirective {
     if (event.dataTransfer) {
       const dragged = event.dataTransfer.getData('dragged');
 
-      if (dragged && this.data) {
+      if ('' !== dragged && this.data) {
         this.todosService.moveElement(JSON.parse(dragged), this.data);
       }
     }

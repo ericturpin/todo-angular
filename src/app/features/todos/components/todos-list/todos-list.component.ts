@@ -46,7 +46,7 @@ export class TodosListComponent {
     this.isCreatingTodo = true;
 
     if (this.todoForm.valid && this.section) {
-      const index = !this.todos?.length ? 0 : (Math.min(...this.todos.map(todo => todo.index) as number[]) - 1);
+      const index = this.todos && 0 < this.todos.length ? (Math.min(...this.todos.map(todo => todo.index) as number[]) - 1) : 0;
       await this.todosService.addTodo({ index, section: this.section.title, ...this.todoForm.value });
     }
 

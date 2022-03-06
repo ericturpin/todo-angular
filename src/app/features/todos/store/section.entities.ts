@@ -2,7 +2,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import Section from '../models/section.model';
 
-export interface SectionsState extends EntityState<Section> {}
+export type SectionsState = EntityState<Section>;
 
 export const sectionsAdapter: EntityAdapter<Section> = createEntityAdapter<Section>({
   selectId: (section: Section): string => {

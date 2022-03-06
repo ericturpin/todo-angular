@@ -52,7 +52,7 @@ export class TodosComponent {
 
   onSectionNameKeyUp(event: KeyboardEvent) {
     if (event.key === 'Enter' && this.sectionNameControl.valid) {
-      const index = !this.sections.length ? 0 : (Math.max(...this.sections.map(todo => todo.index) as number[]) + 1);
+      const index = 0 == this.sections.length ? 0 : (Math.max(...this.sections.map(todo => todo.index) as number[]) + 1);
       this.todosService.addSection({ title: this.sectionNameControl.value, index });
     }
   }

@@ -1,1 +1,1 @@
-declare var Quill: any;
+declare let Quill: any;

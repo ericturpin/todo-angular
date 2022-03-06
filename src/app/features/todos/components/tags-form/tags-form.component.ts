@@ -10,7 +10,7 @@ import { Tag } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TagsFormComponent implements OnChanges {
-  @Input() template: 'list' | 'form' = 'list';
+  @Input() template: 'list'|'form' = 'list';
   @Input() tags: Tag[] | null | undefined;
   @Input() selected: string[] | null | undefined;
   
@@ -26,13 +26,13 @@ export class TagsFormComponent implements OnChanges {
   @Output() destroy = new EventEmitter<void>();
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['template']) {
+    if (undefined != changes['template']) {
       this.editingTag = null;
     }
   }
 
   isSelected(tagId: string | undefined): boolean {
-    return !!this.selected?.find(tag => tag === tagId);
+    return undefined != this.selected?.find(tag => tag === tagId);
   }
 
   toggleTagChecked(tag: Tag) {
@@ -63,7 +63,7 @@ export class TagsFormComponent implements OnChanges {
   saveTag() {
     const tag = { ...this.editingTag, title: this.tagNameFormControl.value };
     
-    if (!tag._id) {
+    if (undefined == tag._id) {
       this.add.emit(tag);
     } else {
       this.update.emit(tag as Tag);

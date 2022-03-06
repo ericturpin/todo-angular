@@ -1,6 +1,10 @@
 {
   "name": "todo-angular",
   "version": "0.0.3",
+  "author": {
+    "email": "turpin.eric.roland@gmail.com",
+    "name": "Turpin Eric"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

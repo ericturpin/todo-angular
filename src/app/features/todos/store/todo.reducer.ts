@@ -117,5 +117,5 @@ export const selectTodosBySection = createSelector(
 
 export const selectOpenedTodo = createSelector(
   todoFeatureSelector,
-  (state) => state.openedTodoId ? state.todos.entities[state.openedTodoId] : undefined
+  (state) => undefined !== state.openedTodoId ? state.todos.entities[state.openedTodoId] : undefined
 );

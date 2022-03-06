@@ -62,7 +62,6 @@ describe('TodosListComponent', () => {
 
     expect(spy).toHaveBeenCalledWith({ index: 0, section: 'to do', ...todoToCreate });
   });
-
   it('should be able to add a todo at the top of a existing todos list', () => {
     const spy = spyOn(component['todosService'], 'addTodo');
     const todoToCreate = { title: 'todo 7', description: 'descr 7'  };
@@ -78,6 +77,7 @@ describe('TodosListComponent', () => {
 
     expect(component.isTodoFormVisible).toBe(true);
 
+    // eslint-disable-next-line
     // @ts-ignore
     component.scrollbar = {
       scrollTo: (): Promise<void> => Promise.resolve()

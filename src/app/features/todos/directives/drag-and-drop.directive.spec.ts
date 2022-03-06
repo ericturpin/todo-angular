@@ -15,13 +15,10 @@ import { DragAndDropDirective } from './drag-and-drop.directive';
 })
 class DraggingComponent { }
 
-
-
 describe('DragAndDropDirective', () => {
   let todosService: TodosService;
   let directive: DragAndDropDirective;
   let fixture: ComponentFixture<DraggingComponent>;
-  let component: DraggingComponent;
   let movableElement: DebugElement;
 
   beforeEach(async () => {
@@ -41,7 +38,6 @@ describe('DragAndDropDirective', () => {
     todosService = TestBed.inject(TodosService);
     
     fixture = TestBed.createComponent(DraggingComponent);
-    component = fixture.componentInstance;
     movableElement = fixture.debugElement.query(By.css('li'));
 
     directive = new DragAndDropDirective(movableElement, todosService);
