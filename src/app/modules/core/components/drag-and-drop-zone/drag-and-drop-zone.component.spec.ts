@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { DataTransferMock, DragEventMock } from '../../../../features/utils/dragevent-mock';
+import { DataTransferMock, DragEventMock } from '../../../../utils/dragevent-mock';
 import { DragAndDropZoneComponent } from './drag-and-drop-zone.component';
 
 describe('DragAndDropZoneComponent', () => {

@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { MaterialModule } from '../../../../material.module';
-import { DataTransferMock, DragEventMock } from '../../../utils/dragevent-mock';
+import { DataTransferMock, DragEventMock } from '../../../../utils/dragevent-mock';
 import { Todo } from '../../models';
 import { TagsFilterPipe } from '../../pipes/tags-filter.pipe';
 import * as fromTodo from '../../store';

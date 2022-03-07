@@ -5,7 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { DataTransferMock, DragEventMock } from '../../utils/dragevent-mock';
+import { DataTransferMock, DragEventMock } from '../../../utils/dragevent-mock';
 import { TodosService } from '../services/todos.service';
 import * as fromTodo from '../store';
 import { DragAndDropDirective } from './drag-and-drop.directive';
